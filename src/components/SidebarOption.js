@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useCollection } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 
 function SidebarOption({ Icon, title, addChannelOption }) {

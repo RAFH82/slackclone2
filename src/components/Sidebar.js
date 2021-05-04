@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
+import { db } from "../firebase";
 
 // Material UI icons
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -17,6 +18,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
 function Sidebar() {
+	const [channels, laoding, error] = useCollection(db.collection("rooms"));
+
 	return (
 		<div>
 			<SidebarContainer>
@@ -42,6 +45,15 @@ function Sidebar() {
 				<SidebarOption Icon={ExpandMoreIcon} title="Channels" />
 				<hr />
 				<SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
+				{channels?.docs.map((doc) => (
+					<SidebarOption
+						key={doc.id}
+						id={doc.id}
+						Icon={AddIcon}
+						addChannelOption
+						title={doc.data().name}
+					/>
+				))}
 			</SidebarContainer>
 		</div>
 	);
