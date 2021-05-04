@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
 import { db } from "../firebase";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 // Material UI icons
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -46,13 +47,7 @@ function Sidebar() {
 				<hr />
 				<SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
 				{channels?.docs.map((doc) => (
-					<SidebarOption
-						key={doc.id}
-						id={doc.id}
-						Icon={AddIcon}
-						addChannelOption
-						title={doc.data().name}
-					/>
+					<SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
 				))}
 			</SidebarContainer>
 		</div>
