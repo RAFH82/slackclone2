@@ -1,26 +1,31 @@
 import React from "react";
 import styled from "styled-components";
-import { Avatar } from "@material-ui/core";
+import {Avatar} from "@material-ui/core";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import SearchIcon from "@material-ui/icons/Search";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import {auth} from "../firebase";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 function Header() {
+	const [user] = useAuthState(auth);
+
 	return (
 		<HeaderContainer>
-			{/* header left */}
 			<HeaderLeft>
 				<HeaderAvatar
-				// Todo add: onClick;
+					onClick={() => auth.signOut()}
+					alt={user?.displayName}
+					src={user?.photoURL}
 				/>
 				<AccessTimeIcon />
 			</HeaderLeft>
-			{/* header search */}
+
 			<HeaderSearch>
 				<SearchIcon />
-				<input type="text" placeholder="Search Chat" />
+				<input type='text' placeholder='Search Chat' />
 			</HeaderSearch>
-			{/* header right */}
+
 			<HeaderRight>
 				<HelpOutlineIcon />
 			</HeaderRight>
@@ -67,7 +72,7 @@ const HeaderSearch = styled.div`
 		background-color: transparent;
 		border: none;
 		text-align: center;
-		min-width: 30vw;
+		min-width: 40vw;
 		outline: none;
 		color: white;
 	}

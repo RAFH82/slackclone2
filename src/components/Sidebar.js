@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
-import { db } from "../firebase";
-import { useCollection } from "react-firebase-hooks/firestore";
+import {auth} from "../firebase";
+import {useAuthState} from "react-firebase-hooks/auth";
+
+import {useCollection} from "react-firebase-hooks/firestore";
+import {db} from "../firebase";
 
 // Material UI icons
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -19,32 +22,33 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
 function Sidebar() {
-	const [channels, laoding, error] = useCollection(db.collection("rooms"));
+	const [user] = useAuthState(auth);
+	const [channels] = useCollection(db.collection("rooms"));
 
 	return (
 		<SidebarContainer>
 			<SidebarHeader>
 				<SidebarInfo>
-					<h2>Producer Chat</h2>
+					<h2>Slack Clone v2.0</h2>
 					<h3>
 						<FiberManualRecordIcon />
-						Ryan Hrechka
+						{user?.displayName}
 					</h3>
 				</SidebarInfo>
 				<CreateIcon />
 			</SidebarHeader>
-			<SidebarOption Icon={InsertCommentIcon} title="Threads" />
-			<SidebarOption Icon={InboxIcon} title="Mentions & Reactions" />
-			<SidebarOption Icon={DraftsIcon} title="Saved Items" />
-			<SidebarOption Icon={BookmarkBorderIcon} title="Channel Browser" />
-			<SidebarOption Icon={PeopleAltIcon} title="People & User Groups" />
-			<SidebarOption Icon={AppsIcon} title="Apps" />
-			<SidebarOption Icon={FileCopyIcon} title="File Browser" />
-			<SidebarOption Icon={ExpandLessIcon} title="Show Less" />
+			<SidebarOption Icon={InsertCommentIcon} title='Threads' />
+			<SidebarOption Icon={InboxIcon} title='Mentions & Reactions' />
+			<SidebarOption Icon={DraftsIcon} title='Saved Items' />
+			<SidebarOption Icon={BookmarkBorderIcon} title='Channel Browser' />
+			<SidebarOption Icon={PeopleAltIcon} title='People & User Groups' />
+			<SidebarOption Icon={AppsIcon} title='Apps' />
+			<SidebarOption Icon={FileCopyIcon} title='File Browser' />
+			<SidebarOption Icon={ExpandLessIcon} title='Show Less' />
 			<hr />
-			<SidebarOption Icon={ExpandMoreIcon} title="Channels" />
+			<SidebarOption Icon={ExpandMoreIcon} title='Channels' />
 			<hr />
-			<SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
+			<SidebarOption Icon={AddIcon} addChannelOption title='Add Channel' />
 			{channels?.docs.map((doc) => (
 				<SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
 			))}
